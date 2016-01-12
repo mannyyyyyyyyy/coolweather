@@ -7,7 +7,24 @@ public class City {
     private int id;
     private String cityName;
     private String cityCode;
-    private int provinceId;
+    private String pinyin;
+    private String provinceOrCountryName;
+
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
+    }
+
+    public String getProvinceOrCountryName() {
+        return provinceOrCountryName;
+    }
+
+    public void setProvinceOrCountryName(String provinceOrCountryName) {
+        this.provinceOrCountryName = provinceOrCountryName;
+    }
 
     public int getId() {
         return id;
@@ -31,13 +48,5 @@ public class City {
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
-    }
-
-    public int getProvinceId() {
-        return provinceId;
-    }
-
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
     }
 }

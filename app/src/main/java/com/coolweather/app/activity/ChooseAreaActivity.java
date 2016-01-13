@@ -2,6 +2,7 @@ package com.coolweather.app.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.coolweather.app.R;
 import com.coolweather.app.model.City;
 import com.coolweather.app.model.CoolWeatherDB;
+import com.coolweather.app.model.WeatherInfo;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -55,7 +57,7 @@ public class ChooseAreaActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedCity = cityList.get(position);
-                queryFromServer(selectedCity.getCityCode());
+                queryFromServer(selectedCity);
             }
         });
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -106,14 +108,18 @@ public class ChooseAreaActivity extends Activity {
             }
         });
     }
-    private void queryFromServer(final String code) {
+    private void queryFromServer(final City city) {
         String address;
-        address = "http://wthrcdn.etouch.cn/weather_mini?citykey=" + code;
+        address = "http://wthrcdn.etouch.cn/weather_mini?citykey=" + city.getCityCode();
         showProgressDialog();
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
             public void onFinish(String response) {
-
+                closeProgressDialog();
+                WeatherInfo weatherInfo = Utility.handleWeatherResponse(ChooseAreaActivity.this, city, response);
+                Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+                intent.putExtra("weather_info", weatherInfo);
+                startActivity(intent);
             }
 
             @Override
